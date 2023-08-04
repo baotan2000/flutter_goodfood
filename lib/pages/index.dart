@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_goodfood/config/const.dart';
 import 'package:flutter_goodfood/pages/favorite/favorite_body.dart';
-import 'package:flutter_goodfood/pages/home/category.dart';
+import 'package:flutter_goodfood/pages/home/widget/category.dart';
 import 'package:flutter_goodfood/pages/home/home_body.dart';
+import 'package:flutter_goodfood/pages/home/widget/product.dart';
 import 'package:flutter_goodfood/pages/seen/seen_body.dart';
 import 'package:flutter/material.dart';
 
@@ -14,12 +15,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-   int _selectedIndex = 0;
+  int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
-    CategoryPage(),
+    ProductPage(),
     FavoriteBody(),
     SeenBody(),
   ];
@@ -39,7 +39,8 @@ class _MyAppState extends State<MyApp> {
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
-      ),      bottomNavigationBar: BottomNavigationBar(
+      ),
+      bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
