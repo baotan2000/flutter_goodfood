@@ -8,6 +8,7 @@ import 'package:flutter_goodfood/pages/seen/seen_body.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatefulWidget {
+  static const routeName = "/";
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -19,7 +20,7 @@ class _MyAppState extends State<MyApp> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
-    ProductPage(),
+    HomeBody(),
     FavoriteBody(),
     SeenBody(),
   ];
