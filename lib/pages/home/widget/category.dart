@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_goodfood/config/const.dart';
+import 'package:flutter_goodfood/providers/category_provider.dart';
 
 class CategoryPage extends StatelessWidget {
   static const routeName = "/category";
@@ -7,15 +8,12 @@ class CategoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final params = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("Category Screen"),
+        title: const Text("Category Screen"),
       ),
       body: ListView.separated(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         itemCount: 4,
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 20);
@@ -35,18 +33,18 @@ class CategoryPage extends StatelessWidget {
               child: GridTile(
                   footer: GridTileBar(
                     backgroundColor: dColorFooterImage,
-                    title: Center(
+                    title: const Center(
                         child: Text("ECHO MEDI", style: styleTittleItem)),
                     subtitle: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.favorite, size: sizeIconButton),
-                        SizedBox(width: 5),
-                        Text("123", style: styleTittleIcon),
-                        SizedBox(width: 10),
-                        Icon(Icons.remove_red_eye, size: sizeIconButton),
-                        SizedBox(width: 5),
-                        Text("123", style: styleTittleIcon),
+                        const Icon(Icons.favorite, size: sizeIconButton),
+                        const SizedBox(width: 5),
+                        const Text("123", style: styleTittleIcon),
+                        const SizedBox(width: 10),
+                        const Icon(Icons.remove_red_eye, size: sizeIconButton),
+                        const SizedBox(width: 5),
+                        const Text("123", style: styleTittleIcon),
                       ],
                     ),
                   ),

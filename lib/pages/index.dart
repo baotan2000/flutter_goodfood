@@ -6,6 +6,7 @@ import 'package:flutter_goodfood/pages/home/home_body.dart';
 import 'package:flutter_goodfood/pages/home/widget/product.dart';
 import 'package:flutter_goodfood/pages/seen/seen_body.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_goodfood/providers/category_provider.dart';
 
 class MyApp extends StatefulWidget {
   static const routeName = "/";
@@ -19,10 +20,10 @@ class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
+  static final List<Widget> _widgetOptions = <Widget>[
     HomeBody(),
-    FavoriteBody(),
-    SeenBody(),
+    const FavoriteBody(),
+    const SeenBody(),
   ];
 
   void _onItemTapped(int index) {
