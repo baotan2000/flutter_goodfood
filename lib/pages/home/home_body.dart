@@ -11,12 +11,12 @@ class HomeBody extends StatelessWidget {
     return FutureBuilder(
       future: CategoryProvider().readJson(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        print(snapshot);
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
 
         var categoryItem = snapshot.hasData ? snapshot.data : [];
+        // print(snapshot);
         return snapshot.hasData
             ? GridView.builder(
                 padding: EdgeInsets.all(10),
@@ -35,7 +35,10 @@ class HomeBody extends StatelessWidget {
                       //   ),
                       // );
                       Navigator.pushNamed(context, CategoryPage.routeName,
-                          arguments: {"title": index});
+                          arguments: {
+                            "title": categoryItem[index].name,
+                            "categoryid": categoryItem[index].id
+                          });
                     },
                     child: Column(
                       children: [

@@ -7,6 +7,8 @@ import 'package:flutter_goodfood/pages/home/widget/product.dart';
 import 'package:flutter_goodfood/pages/seen/seen_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_goodfood/providers/category_provider.dart';
+import 'package:flutter_goodfood/providers/product_provider.dart';
+import 'package:provider/provider.dart';
 
 class MyApp extends StatefulWidget {
   static const routeName = "/";
@@ -34,36 +36,40 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Món ăn ngon"),
-        backgroundColor: dColorMain,
-      ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Trang chủ',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Yêu thích',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.timelapse_sharp),
-            label: 'Đã xem',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        backgroundColor: dColorMain,
-        iconSize: sizeIconButton,
-        selectedItemColor: dColorIconButtonInActive,
-        unselectedItemColor: dColorIconButtonNotActive,
-      ),
-    );
+    return FutureBuilder(
+        future: Provider.of<ProductProvider>(context).readJson(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text("Món ăn ngon"),
+              backgroundColor: dColorMain,
+            ),
+            body: Center(
+              child: _widgetOptions.elementAt(_selectedIndex),
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Trang chủ',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.favorite),
+                  label: 'Yêu thích',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.timelapse_sharp),
+                  label: 'Đã xem',
+                ),
+              ],
+              currentIndex: _selectedIndex,
+              onTap: _onItemTapped,
+              backgroundColor: dColorMain,
+              iconSize: sizeIconButton,
+              selectedItemColor: dColorIconButtonInActive,
+              unselectedItemColor: dColorIconButtonNotActive,
+            ),
+          );
+        });
   }
 }
