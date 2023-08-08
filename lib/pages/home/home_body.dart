@@ -37,7 +37,7 @@ class HomeBody extends StatelessWidget {
                       Navigator.pushNamed(context, CategoryPage.routeName,
                           arguments: {
                             "title": categoryItem[index].name,
-                            "categoryid": categoryItem[index].id
+                            "categoryId": categoryItem[index].id
                           });
                     },
                     child: Column(

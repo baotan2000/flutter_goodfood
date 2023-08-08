@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_goodfood/config/const.dart';
+import 'package:flutter_goodfood/pages/home/widget/product.dart';
 import 'package:flutter_goodfood/providers/product_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +29,11 @@ class CategoryPage extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(
+                context,
+                ProductPage.routeName,
+                arguments: {"id": products[index].id},
+              );
             },
             child: Container(
               decoration: BoxDecoration(
