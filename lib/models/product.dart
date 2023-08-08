@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-class Product {
+class Product extends ChangeNotifier {
   String id;
   String categoryId;
   String title;
@@ -11,6 +13,7 @@ class Product {
   String instructions;
   String view;
   String favorite;
+  bool isFavorite = false;
   Product({
     required this.id,
     required this.categoryId,
@@ -22,6 +25,14 @@ class Product {
     required this.view,
     required this.favorite,
   });
+
+  void toggleIsFavorite() {
+    isFavorite = !isFavorite;
+    favorite = isFavorite
+        ? (int.parse(favorite) + 1).toString()
+        : (int.parse(favorite) - 1).toString();
+    notifyListeners();
+  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{

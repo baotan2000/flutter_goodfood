@@ -3,6 +3,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_goodfood/config/const.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_goodfood/providers/product_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProductPage extends StatefulWidget {
   static final routeName = '/product';
@@ -30,7 +32,10 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool change = true;
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    var product =
+        Provider.of<ProductProvider>(context).getItemsWithId(arg['id']);
     return Scaffold(
       body: Column(
         children: [
@@ -39,8 +44,7 @@ class _ProductPageState extends State<ProductPage> {
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(
-                      "https://plus.unsplash.com/premium_photo-1666183669448-e41821d3ba2e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"),
+                  image: AssetImage(product.image),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -50,15 +54,8 @@ class _ProductPageState extends State<ProductPage> {
                   Positioned(
                     top: 10,
                     left: 10,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.arrow_left,
-                        size: 40,
-                        color: Colors.black,
-                      ),
+                    child: BackButton(
+                      color: Colors.white,
                     ),
                   ),
                   Row(
@@ -77,9 +74,24 @@ class _ProductPageState extends State<ProductPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.favorite, size: sizeIconButton),
+                            GestureDetector(
+                              onTap: () {
+                                product.toggleIsFavorite();
+                                setState(() {
+                                  change = !change;
+                                });
+                              },
+                              child: Icon(Icons.favorite,
+                                  size: sizeIconButton,
+                                  color: product.isFavorite
+                                      ? Colors.red
+                                      : dColorIconButtonNotActive),
+                            ),
                             SizedBox(width: 5),
-                            Text("123", style: styleTittleIcon),
+                            Text(
+                              product.favorite,
+                              style: styleTittleIcon,
+                            ),
                           ],
                         ),
                       ),
@@ -94,9 +106,13 @@ class _ProductPageState extends State<ProductPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.remove_red_eye, size: sizeIconButton),
+                            Icon(
+                              Icons.remove_red_eye,
+                              size: sizeIconButton,
+                              color: dColorIconButtonNotActive,
+                            ),
                             SizedBox(width: 5),
-                            Text("123", style: styleTittleIcon),
+                            Text(product.view, style: styleTittleIcon),
                           ],
                         ),
                       ),
@@ -108,64 +124,73 @@ class _ProductPageState extends State<ProductPage> {
           ),
           Expanded(
             flex: 2,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Text(
-                      "Explicabo id et aliquid ad omnis atque placeat vel. Quo ut eos quidem. Aut enim itaque modi eum."),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        child: Center(
-                            child: Text("Nguyên liệu", style: styleTittleItem)),
-                        width: 167,
-                        height: 35,
-                        decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20))),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                            textAlign: TextAlign.justify,
-                            "Itaque nihil officiis exercitationem consectetur. Ut minus expedita voluptas culpa suscipit sed ut. Voluptas deserunt dolorem consequuntur ea. Est modi fuga dolores quia sit quod est blanditiis dolores. Et libero et voluptatem in eius et ipsam corporis."),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.circular(2)),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        child: Center(
-                            child:
-                                Text("Cách thực hiện", style: styleTittleItem)),
-                        width: 167,
-                        height: 35,
-                        decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20))),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                            textAlign: TextAlign.justify,
-                            "Itaque nihil officiis exercitationem consectetur. Ut minus expedita voluptas culpa suscipit sed ut. Voluptas deserunt dolorem consequuntur ea. Est modi fuga dolores quia sit quod est blanditiis dolores. Et libero et voluptatem in eius et ipsam corporis."),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.circular(2)),
-                      ),
-                    ],
-                  )
-                ],
+            child: Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
+                      'assets/images/background/background_product.png'),
+                ),
+              ),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Text(product.title),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          child: Center(
+                              child:
+                                  Text("Nguyên liệu", style: styleTittleItem)),
+                          width: 167,
+                          height: 35,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20))),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                              textAlign: TextAlign.justify,
+                              product.ingredients),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(2)),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          child: Center(
+                              child: Text("Cách thực hiện",
+                                  style: styleTittleItem)),
+                          width: 167,
+                          height: 35,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20))),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                              textAlign: TextAlign.justify,
+                              product.instructions),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(2)),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
