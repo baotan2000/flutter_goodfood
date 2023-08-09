@@ -36,6 +36,7 @@ class _ProductPageState extends State<ProductPage> {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     var product =
         Provider.of<ProductProvider>(context).getItemsWithId(arg['id']);
+    product.toggleIsSeen();
     return Scaffold(
       body: Column(
         children: [

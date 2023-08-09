@@ -40,7 +40,7 @@ class CategoryPage extends StatelessWidget {
               },
               child: ChangeNotifierProvider<Product>.value(
                 value: products[index],
-                child: CategoryBody(),
+                child: const CategoryBody(),
               ));
         },
       ),

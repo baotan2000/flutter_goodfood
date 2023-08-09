@@ -1,57 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_goodfood/config/const.dart';
+import 'package:flutter_goodfood/providers/product_provider.dart';
+import 'package:provider/provider.dart';
 
-class SeenBody extends StatefulWidget {
-  const SeenBody({super.key});
+class SeenBody extends StatelessWidget {
+  const SeenBody({Key? key}) : super(key: key);
 
-  @override
-  State<SeenBody> createState() => _SeenBodyState();
-}
-
-class _SeenBodyState extends State<SeenBody> {
   @override
   Widget build(BuildContext context) {
+    var items = Provider.of<ProductProvider>(context).getItemsIsSeen();
+
     return ListView.builder(
-      itemCount: 10,
+      itemCount: items.length,
       padding: const EdgeInsets.all(15),
       itemBuilder: (BuildContext context, int index) {
-        return Dismissible(
-          key: ValueKey<int>(index),
-          // onDismissed: (DismissDirection direction) {
-          //   setState(() {
-          //     items.removeAt(index);
-          //   });
-          // },
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 20.0),
-            child: SizedBox(
-              width: double.infinity,
-              height: 140,
-              child: GridTile(
-                  footer: GridTileBar(
-                    trailing: Icon(
-                      Icons.swipe,
-                      color: dColorIconButtonNotActive,
-                      size: sizeIconButton,
+        return ChangeNotifierProvider.value(
+          value: items[index],
+          child: Dismissible(
+            confirmDismiss: (direction) async {
+              //search flutter dialog
+              return await showDialog(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text('Xóa sản phẩm yêu thích'),
+                  content: const Text('Bạn chắc chắn xóa sản phẩm ?'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text('Cancel'),
                     ),
-                    backgroundColor: Colors.white70,
-                    title: Text(
-                      "Est nobis at qui",
-                      style: styleTittleItem,
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: const Text('OK'),
                     ),
-                  ),
-                  child: Container(
-                    width: double.infinity,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                            "https://images.unsplash.com/photo-1683610960469-948a0c541f86?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80"),
+                  ],
+                ),
+              );
+            },
+            onDismissed: (direction) {
+              items[index].handleRemoveIsSeen();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Xóa thành công !"),
+                ),
+              );
+            },
+            key: ValueKey<int>(index),
+            // onDismissed: (DismissDirection direction) {
+            //   setState(() {
+            //     items.removeAt(index);
+            //   });
+            // },
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child: SizedBox(
+                width: double.infinity,
+                height: 140,
+                child: GridTile(
+                    footer: GridTileBar(
+                      trailing: const Icon(
+                        Icons.swipe,
+                        color: dColorIconButtonNotActive,
+                        size: sizeIconButton,
+                      ),
+                      backgroundColor: Colors.white70,
+                      title: Text(
+                        items[index].title,
+                        style: styleTittleItem,
                       ),
                     ),
-                  )),
+                    child: Container(
+                      width: double.infinity,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage(items[index].image),
+                        ),
+                      ),
+                    )),
+              ),
             ),
           ),
         );

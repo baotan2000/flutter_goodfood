@@ -43,6 +43,11 @@ class _FavoriteBodyState extends State<FavoriteBody> {
             },
             onDismissed: (direction) {
               items[index].handleRemoveIsFavorite();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Xóa thành công !"),
+                ),
+              );
             },
             key: ValueKey<int>(index),
             // onDismissed: (DismissDirection direction) {
