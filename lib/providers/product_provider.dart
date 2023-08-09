@@ -16,6 +16,10 @@ class ProductProvider extends ChangeNotifier {
     return _items.singleWhere((element) => element.id == id);
   }
 
+  List<Product> getItemsIsFavorite() {
+    return _items.where((element) => element.isFavorite).toList();
+  }
+
   Future<List<Product>> readJson() async {
     final String response =
         await rootBundle.loadString('assets/json/product.json');

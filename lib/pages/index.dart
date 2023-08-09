@@ -20,6 +20,16 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
+
+  late Future _dataFuture;
+
+  @override
+  //lưu trữ thay đổi sau khi chuyển đổi trang
+  void didChangeDependencies() {
+    _dataFuture = Provider.of<ProductProvider>(context).readJson();
+    // TODO: implement didChangeDependencies
+  }
+
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[
@@ -37,7 +47,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Provider.of<ProductProvider>(context).readJson(),
+        future: _dataFuture,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return Scaffold(
             appBar: AppBar(
