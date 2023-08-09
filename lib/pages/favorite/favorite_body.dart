@@ -21,6 +21,29 @@ class _FavoriteBodyState extends State<FavoriteBody> {
         return ChangeNotifierProvider.value(
           value: items[index],
           child: Dismissible(
+            confirmDismiss: (direction) async {
+              //search flutter dialog
+              return await showDialog(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text('Xóa sản phẩm yêu thích'),
+                  content: const Text('Bạn chắc chắn xóa sản phẩm ?'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: const Text('OK'),
+                    ),
+                  ],
+                ),
+              );
+            },
+            onDismissed: (direction) {
+              items[index].handleRemoveIsFavorite();
+            },
             key: ValueKey<int>(index),
             // onDismissed: (DismissDirection direction) {
             //   setState(() {
@@ -34,7 +57,7 @@ class _FavoriteBodyState extends State<FavoriteBody> {
                 height: 140,
                 child: GridTile(
                     footer: GridTileBar(
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.swipe,
                         color: dColorIconButtonNotActive,
                         size: sizeIconButton,

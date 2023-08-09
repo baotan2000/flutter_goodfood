@@ -34,6 +34,11 @@ class Product extends ChangeNotifier {
     notifyListeners();
   }
 
+  void handleRemoveIsFavorite() {
+    isFavorite = false;
+    favorite = (int.parse(favorite) - 1).toString();
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,

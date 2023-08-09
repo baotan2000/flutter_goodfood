@@ -16,8 +16,8 @@ class CategoryPage extends StatelessWidget {
     final data = ModalRoute.of(context)!.settings.arguments as Map;
     var products = Provider.of<ProductProvider>(context)
         .getItemsWithCategoryId(data["categoryId"]);
-    // print(data);
-    print(products);
+    // // print(data);
+    // print(products);
     return Scaffold(
       appBar: AppBar(
         title: Text(data["title"]),
